@@ -51,13 +51,20 @@
         [Browsable(false)]
         public CefBrowserSettings BrowserSettings { get; set; }
 
-		internal void InvokeIfRequired(Action a)
+	internal void InvokeIfRequired(Action a)
+	{
+		if (InvokeRequired)
 		{
-			if (InvokeRequired)
+			if(!IsDisposed && !Disposing)
+			{
 				Invoke(a);
-			else
-				a();
+			}
 		}
+		else
+		{
+			a();
+		}
+	}
 
         protected virtual CefWebClient CreateWebClient()
         {
